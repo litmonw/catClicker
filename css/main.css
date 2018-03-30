@@ -1,0 +1,29 @@
+div {
+    position: relative;
+    width: 640px;
+    height: 496px;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.cat-name {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    background-color: #484848;
+}
+
+.click-counter {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    background-color: #484848;
+}
