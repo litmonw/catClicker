@@ -41,6 +41,7 @@ let controller = {
         // 将视图初始化
         catListView.init();
         catView.init();
+        catAdminView.init();
     },
 
     getCurrentCat: function () {
@@ -70,11 +71,11 @@ let catView = {
         this.catNameElm = $('#cat-name');
         this.catImageElm = $('#cat-img');
         this.countElm = $('#cat-count');
-        console.log(this.countElm);
 
         // 点击后，增加当前猫的计数器
         this.catImageElm.click(function () {
             controller.incrementCounter();
+            catAdminView.render();
         });
 
         // 渲染此视图（用正确的值更新 DOM 元素）
@@ -103,7 +104,6 @@ let catListView =  {
         let cats = controller.getCats();
         // 清空猫列表
         this.catListElm.html('');
-        
         // 循环所有的猫
         const that = this;
         cats.forEach(function (cat) {
@@ -115,6 +115,7 @@ let catListView =  {
 
                 controller.setCurrentCat(cat);
                 catView.render();
+                catAdminView.render();
             });
             // 最后将元素添加到列表中
             that.catListElm.append(elm);
@@ -122,6 +123,61 @@ let catListView =  {
         
     }
 };
+
+let catAdminView = {
+    init: function () {
+        this.catAdminElm = $('#cat-admin');
+        this.adminSwitchElm = $('#admin-switch');
+        this.adminCatNameElm = $('#admin-name');
+        this.adminCatImgUrlElm = $('#admin-imgUrl');
+        this.adminCatCountElm = $('#admin-clickCount');
+        this.switchOn = false;
+
+        // 隐藏 Admin 按钮
+        this.catAdminElm.hide();
+
+        // 渲染视图
+        this.render();
+    },
+
+    render: function () {
+        let that = this;
+
+        // 解除所有绑定事件
+        this.adminSwitchElm.off('click');
+
+        // 绑定显示隐藏 Admin 按钮
+        let switchOn = this.switchOn;
+        
+        this.adminSwitchElm.click(function () {
+            if (that.switchOn) {
+                that.catAdminElm.hide();
+                that.switchOn = false;
+            } else {
+                that.catAdminElm.show();
+                that.switchOn = true;
+            }
+        });
+
+        // 获取当前猫的属性并赋值给视图
+        let currentCat = controller.getCurrentCat();
+        this.adminCatNameElm.val(currentCat.name);
+        this.adminCatImgUrlElm.val(currentCat.imgSrc);
+        this.adminCatCountElm.val(currentCat.clickCount);
+
+        // 绑定点击事件
+        this.catAdminElm.submit(function (e) {
+            let currentCat = controller.getCurrentCat();
+            currentCat.name = that.adminCatNameElm.val();
+            currentCat.imgSrc = that.adminCatImgUrlElm.val();
+            currentCat.clickCount = that.adminCatCountElm.val();
+            e.preventDefault();
+
+            catListView.render();
+            catView.render();
+        })
+    }
+}
 
 // 开始吧！
 controller.init();
