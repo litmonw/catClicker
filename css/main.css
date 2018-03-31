@@ -4,15 +4,7 @@ div {
     height: 496px;
 }
 
-.hide {
-    display: none;
-}
-
-.show {
-    display: block;
-}
-
-.cat-name {
+#cat-name {
     position: absolute;
     left: 0;
     top: 0;
@@ -20,7 +12,7 @@ div {
     background-color: #484848;
 }
 
-.click-counter {
+#cat-count {
     position: absolute;
     right: 0;
     top: 0;
